@@ -97,13 +97,6 @@ export class WebService {
         thread_ts: threadTimeStamp,
         blocks: [
           {
-            type: 'section',
-            text: {
-              type: 'mrkdwn',
-              text: `<@${userId}>`,
-            },
-          },
-          {
             type: 'image',
             // eslint-disable-next-line @typescript-eslint/camelcase
             image_url: text,
