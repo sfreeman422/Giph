@@ -22,32 +22,19 @@ export class WebService {
     threadTimeStamp?: string,
   ): void {
     const token: string | undefined = process.env.GIPH_BOT_TOKEN;
-    console.log('channel', channel);
-    console.log('text', text);
-    console.log('searchTerm', searchTerm);
-    console.log('userId', userId);
-    console.log('isEpehemeral', isEphemeral);
-    console.log('ts', threadTimeStamp);
-    const postRequest: ChatPostMessageArguments = {
-      token,
-      channel,
-      text: `<@${userId}> \n ${text}`,
-      // eslint-disable-next-line @typescript-eslint/camelcase
-      thread_ts: threadTimeStamp,
-    };
     if (isEphemeral) {
       const postEphem: ChatPostEphemeralArguments = {
         token,
         channel,
-        text,
+        text: text,
         user: userId,
         blocks: [
           {
-            type: 'section',
-            text: {
-              type: 'mrkdwn',
-              text,
-            },
+            type: 'image',
+            // eslint-disable-next-line @typescript-eslint/camelcase
+            image_url: text,
+            // eslint-disable-next-line @typescript-eslint/camelcase
+            alt_text: searchTerm,
           },
           {
             type: 'actions',
@@ -85,17 +72,25 @@ export class WebService {
                 value: 'cancel',
                 // eslint-disable-next-line prettier/prettier
                 // eslint-disable-next-line @typescript-eslint/camelcase
-                action_id: `${searchTerm}`,
+                action_id: `cancel`,
               },
             ],
           },
         ],
       };
+
       this.web.chat.postEphemeral(postEphem).catch((e) => {
         console.error(e);
         console.error(e.data.response_metadata);
       });
     } else {
+      const postRequest: ChatPostMessageArguments = {
+        token,
+        channel,
+        text: `<@${userId}> \n ${text}`,
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        thread_ts: threadTimeStamp,
+      };
       this.web.chat.postMessage(postRequest).catch((e) => console.error(e));
     }
   }

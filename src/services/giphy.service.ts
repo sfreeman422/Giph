@@ -19,7 +19,11 @@ export class GiphyService {
       `http://api.giphy.com/v1/gifs/random?tag=${searchTerm}&api_key=${process.env.GIPHY_API_TOKEN}`,
     )
       .then((resp: any) => {
-        return { data: resp.data.data.images.downsized.url };
+        const downsized: string = resp.data.data.images.downsized.url as string;
+        const shortened = downsized.slice(0, downsized.indexOf('?'));
+        return {
+          data: shortened,
+        };
       })
       .catch((e) => {
         console.error(e);
