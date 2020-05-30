@@ -40,6 +40,10 @@ export class WebService {
             image_url: text,
             // eslint-disable-next-line @typescript-eslint/camelcase
             alt_text: searchTerm,
+            title: {
+              type: 'plain_text',
+              text: searchTerm,
+            },
           },
           {
             type: 'actions',
@@ -102,13 +106,17 @@ export class WebService {
             image_url: text,
             // eslint-disable-next-line @typescript-eslint/camelcase
             alt_text: 'whatever',
+            title: {
+              type: 'plain_text',
+              text: searchTerm,
+            },
           },
           {
             type: 'context',
             elements: [
               {
                 type: 'mrkdwn',
-                text: `Posted by: <@${userId}> | Search: ${searchTerm}`,
+                text: `Posted by: <@${userId}>`,
               },
             ],
           },
