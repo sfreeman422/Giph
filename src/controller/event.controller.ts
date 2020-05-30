@@ -33,13 +33,14 @@ eventController.post('/interaction', async (req: Request, res: Response) => {
   const text = request.actions[0].action_id;
   const userId = request.user.id;
 
-  console.log(request);
   if (type === 'block_actions') {
     if (value === 'send') {
+      webService.deleteEphem(request.response_url);
       webService.sendMessage(channel, text, '', userId, false);
     } else if (value === 'cancel') {
-      console.log('should delete ephemeral message');
+      webService.deleteEphem(request.response_url);
     } else if (value === 'shuffle') {
+      webService.deleteEphem(request.response_url);
       const gifUrl: { data?: string; error?: string } = await giphyService.getGif(text);
       if (gifUrl.error) {
         res.send(gifUrl.error);

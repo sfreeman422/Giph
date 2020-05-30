@@ -1,4 +1,5 @@
 import { ChatPostMessageArguments, WebClient, ChatPostEphemeralArguments } from '@slack/web-api';
+import Axios from 'axios';
 
 export class WebService {
   public static getInstance(): WebService {
@@ -10,6 +11,10 @@ export class WebService {
   private static instance: WebService;
   private web: WebClient = new WebClient(process.env.GIPH_BOT_TOKEN);
 
+  public deleteEphem(responseUrl: string): void {
+    // eslint-disable-next-line @typescript-eslint/camelcase
+    Axios.post(responseUrl, { delete_original: true });
+  }
   /**
    * Handles sending messages to the chat.
    */
