@@ -110,6 +110,15 @@ export class WebService {
             // eslint-disable-next-line @typescript-eslint/camelcase
             alt_text: 'whatever',
           },
+          {
+            type: 'context',
+            elements: [
+              {
+                type: 'mrkdwn',
+                text: `Posted by: <@${userId}>`,
+              },
+            ],
+          },
         ],
       };
       this.web.chat.postMessage(postRequest).catch((e) => console.error(e));
