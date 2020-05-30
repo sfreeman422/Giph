@@ -15,6 +15,7 @@ export class WebService {
     // eslint-disable-next-line @typescript-eslint/camelcase
     Axios.post(responseUrl, { delete_original: true });
   }
+
   /**
    * Handles sending messages to the chat.
    */
@@ -27,65 +28,68 @@ export class WebService {
     threadTimeStamp?: string,
   ): void {
     const token: string | undefined = process.env.GIPH_BOT_TOKEN;
+    const ephemBlocks = [
+      {
+        type: 'image',
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        image_url: text,
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        alt_text: searchTerm,
+        title: {
+          type: 'plain_text',
+          text: searchTerm,
+        },
+      },
+      {
+        type: 'actions',
+        elements: [
+          {
+            type: 'button',
+            text: {
+              type: 'plain_text',
+              text: 'Send',
+            },
+            style: 'primary',
+            value: 'send',
+            // eslint-disable-next-line prettier/prettier
+            // eslint-disable-next-line @typescript-eslint/camelcase
+            action_id: `${text},${searchTerm}`,
+          },
+          {
+            type: 'button',
+            text: {
+              type: 'plain_text',
+              text: 'Shuffle',
+            },
+            value: 'shuffle',
+            // eslint-disable-next-line prettier/prettier
+            // eslint-disable-next-line @typescript-eslint/camelcase
+            action_id: `${searchTerm}`,
+          },
+          {
+            type: 'button',
+            text: {
+              type: 'plain_text',
+              text: 'Cancel',
+            },
+            style: 'danger',
+            value: 'cancel',
+            // eslint-disable-next-line prettier/prettier
+            // eslint-disable-next-line @typescript-eslint/camelcase
+            action_id: `cancel`,
+          },
+        ],
+      },
+    ];
+
     if (isEphemeral) {
+      console.log('sending ephem');
       const postEphem: ChatPostEphemeralArguments = {
         token,
         channel,
         text: text,
         user: userId,
-        blocks: [
-          {
-            type: 'image',
-            // eslint-disable-next-line @typescript-eslint/camelcase
-            image_url: text,
-            // eslint-disable-next-line @typescript-eslint/camelcase
-            alt_text: searchTerm,
-            title: {
-              type: 'plain_text',
-              text: searchTerm,
-            },
-          },
-          {
-            type: 'actions',
-            elements: [
-              {
-                type: 'button',
-                text: {
-                  type: 'plain_text',
-                  text: 'Send',
-                },
-                style: 'primary',
-                value: 'send',
-                // eslint-disable-next-line prettier/prettier
-                // eslint-disable-next-line @typescript-eslint/camelcase
-                action_id: `${text},${searchTerm}`,
-              },
-              {
-                type: 'button',
-                text: {
-                  type: 'plain_text',
-                  text: 'Shuffle',
-                },
-                value: 'shuffle',
-                // eslint-disable-next-line prettier/prettier
-                // eslint-disable-next-line @typescript-eslint/camelcase
-                action_id: `${searchTerm}`,
-              },
-              {
-                type: 'button',
-                text: {
-                  type: 'plain_text',
-                  text: 'Cancel',
-                },
-                style: 'danger',
-                value: 'cancel',
-                // eslint-disable-next-line prettier/prettier
-                // eslint-disable-next-line @typescript-eslint/camelcase
-                action_id: `cancel`,
-              },
-            ],
-          },
-        ],
+        blocks: ephemBlocks,
       };
 
       this.web.chat.postEphemeral(postEphem).catch((e) => {

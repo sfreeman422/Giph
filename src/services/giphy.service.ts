@@ -17,7 +17,8 @@ export class GiphyService {
   }> {
     return await Axios.get(`http://api.giphy.com/v1/gifs/search?q=${searchTerm}&api_key=${process.env.GIPHY_API_TOKEN}`)
       .then((resp: any) => {
-        const random = Math.floor(Math.random() * resp.data.data.length) + 1;
+        const random = Math.floor(Math.random() * resp.data.data.length);
+        console.log(random);
         const downsized: string = resp.data.data[random].images.downsized.url as string;
         const shortened = downsized.slice(0, downsized.indexOf('?'));
         return {

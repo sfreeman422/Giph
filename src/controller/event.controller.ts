@@ -12,7 +12,6 @@ eventController.post('/get/gif', async (req: Request, res: Response) => {
   if (req.body.challenge) {
     res.send({ challenge: req.body.challenge });
   } else {
-    res.status(200).send();
     const request: SlashCommandRequest = req.body;
     const userId = request.user_id;
     const searchTerm = request.text;
@@ -23,6 +22,7 @@ eventController.post('/get/gif', async (req: Request, res: Response) => {
       webService.sendMessage(request.channel_name, gifUrl.data as string, searchTerm, userId, true);
     }
   }
+  res.status(200).send();
 });
 
 eventController.post('/interaction', async (req: Request, res: Response) => {
@@ -32,7 +32,6 @@ eventController.post('/interaction', async (req: Request, res: Response) => {
   const channel = request.channel.name;
   const text = request.actions[0].action_id;
   const userId = request.user.id;
-  res.status(200).send();
   if (type === 'block_actions') {
     if (value === 'send') {
       const words = text.split(',');
@@ -43,13 +42,14 @@ eventController.post('/interaction', async (req: Request, res: Response) => {
     } else if (value === 'cancel') {
       webService.deleteEphem(request.response_url);
     } else if (value === 'shuffle') {
-      webService.deleteEphem(request.response_url);
       const gifUrl: { data?: string; error?: string } = await giphyService.getGif(text);
       if (gifUrl.error) {
         res.send(gifUrl.error);
       } else {
         webService.sendMessage(channel, gifUrl.data as string, text, userId, true);
+        webService.deleteEphem(request.response_url);
       }
     }
   }
+  res.status(200).send();
 });
