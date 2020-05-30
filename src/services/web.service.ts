@@ -116,7 +116,7 @@ export class WebService {
             elements: [
               {
                 type: 'mrkdwn',
-                text: `Posted by: <@${userId}>`,
+                text: `Posted by: <@${userId}> | Search: ${searchTerm}`,
               },
             ],
           },
