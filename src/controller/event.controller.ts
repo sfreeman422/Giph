@@ -35,8 +35,13 @@ eventController.post('/interaction', async (req: Request, res: Response) => {
 
   if (type === 'block_actions') {
     if (value === 'send') {
+      const words = text.split(' ');
+      const url = words[0];
+      const searchTerm = words[1];
+      console.log(url);
+      console.log(searchTerm);
       webService.deleteEphem(request.response_url);
-      webService.sendMessage(channel, text, '', userId, false);
+      webService.sendMessage(channel, text, searchTerm, userId, false);
     } else if (value === 'cancel') {
       webService.deleteEphem(request.response_url);
     } else if (value === 'shuffle') {
