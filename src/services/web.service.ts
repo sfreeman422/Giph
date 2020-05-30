@@ -108,7 +108,7 @@ export class WebService {
             elements: [
               {
                 type: 'mrkdwn',
-                text: `Posted by: <@${userId}> | Search: ${searchTerm}`,
+                text: `Posted by: <@${userId}> Search: ${searchTerm}`,
               },
             ],
           },
