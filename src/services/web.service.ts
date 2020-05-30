@@ -54,7 +54,7 @@ export class WebService {
                 value: 'send',
                 // eslint-disable-next-line prettier/prettier
                 // eslint-disable-next-line @typescript-eslint/camelcase
-                action_id: `${text} ${searchTerm}`,
+                action_id: `${text},${searchTerm}`,
               },
               {
                 type: 'button',
@@ -108,7 +108,7 @@ export class WebService {
             elements: [
               {
                 type: 'mrkdwn',
-                text: `Posted by: <@${userId}> Search: ${searchTerm}`,
+                text: `Posted by: <@${userId}> | Search: ${searchTerm}`,
               },
             ],
           },
