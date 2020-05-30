@@ -16,7 +16,7 @@ export class GiphyService {
     error?: string;
   }> {
     return await Axios.get(
-      `http://api.giphy.com/v1/gifs/random?tag=${searchTerm}&api_key=${process.env.GIPHY_API_TOKEN}`,
+      `http://api.giphy.com/v1/gifs/translate?s=${searchTerm}&api_key=${process.env.GIPHY_API_TOKEN}`,
     )
       .then((resp: any) => {
         const downsized: string = resp.data.data.images.downsized.url as string;
