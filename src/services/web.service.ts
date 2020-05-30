@@ -87,9 +87,25 @@ export class WebService {
       const postRequest: ChatPostMessageArguments = {
         token,
         channel,
-        text: `<@${userId}> \n ${text}`,
+        text: `a gif`,
         // eslint-disable-next-line @typescript-eslint/camelcase
         thread_ts: threadTimeStamp,
+        blocks: [
+          {
+            type: 'section',
+            text: {
+              type: 'mrkdwn',
+              text: `<@${userId}>`,
+            },
+          },
+          {
+            type: 'image',
+            // eslint-disable-next-line @typescript-eslint/camelcase
+            image_url: text,
+            // eslint-disable-next-line @typescript-eslint/camelcase
+            alt_text: 'whatever',
+          },
+        ],
       };
       this.web.chat.postMessage(postRequest).catch((e) => console.error(e));
     }

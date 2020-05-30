@@ -33,6 +33,7 @@ eventController.post('/interaction', async (req: Request, res: Response) => {
   const text = request.actions[0].action_id;
   const userId = request.user.id;
 
+  console.log(request);
   if (type === 'block_actions') {
     if (value === 'send') {
       webService.sendMessage(channel, text, '', userId, false);
