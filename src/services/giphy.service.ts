@@ -22,6 +22,9 @@ export class GiphyService {
       `http://api.giphy.com/v1/gifs/${endpoint}?${queryParam}=${searchTerm}&api_key=${process.env.GIPHY_API_TOKEN}`,
     )
       .then((resp: any) => {
+        if (!resp.data.data.images) {
+          return { error: `No gifs found.` };
+        }
         if (isRandom) {
           const downsized = resp.data.data.images.downsized.url as string;
           const shortened = downsized.slice(0, downsized.indexOf('?'));
@@ -30,7 +33,6 @@ export class GiphyService {
           };
         } else {
           const random = Math.floor(Math.random() * resp.data.data.length);
-          console.log(random);
           const downsized: string = resp.data.data[random].images.downsized.url as string;
           const shortened = downsized.slice(0, downsized.indexOf('?'));
           return {
