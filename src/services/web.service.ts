@@ -35,10 +35,6 @@ export class WebService {
         image_url: text,
         // eslint-disable-next-line @typescript-eslint/camelcase
         alt_text: searchTerm,
-        title: {
-          type: 'plain_text',
-          text: searchTerm,
-        },
       },
       {
         type: 'actions',
