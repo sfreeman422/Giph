@@ -9,18 +9,27 @@ const webService = WebService.getInstance();
 const giphyService = GiphyService.getInstance();
 
 eventController.post('/get/gif', async (req: Request, res: Response) => {
-  if (req.body.challenge) {
-    res.send({ challenge: req.body.challenge });
+  const request: SlashCommandRequest = req.body;
+  const userId = request.user_id;
+  const searchTerm = request.text;
+  const gifUrl: { data?: string; error?: string } = await giphyService.getGif(searchTerm);
+  if (gifUrl.error) {
+    res.send(gifUrl.error);
   } else {
-    const request: SlashCommandRequest = req.body;
-    const userId = request.user_id;
-    const searchTerm = request.text;
-    const gifUrl: { data?: string; error?: string } = await giphyService.getGif(searchTerm);
-    if (gifUrl.error) {
-      res.send(gifUrl.error);
-    } else {
-      webService.sendMessage(request.channel_name, gifUrl.data as string, searchTerm, userId, true);
-    }
+    webService.sendMessage(request.channel_name, gifUrl.data as string, searchTerm, userId, true);
+  }
+  res.status(200).send();
+});
+
+eventController.post('/get/gif/random', async (req: Request, res: Response) => {
+  const request: SlashCommandRequest = req.body;
+  const userId = request.user_id;
+  const searchTerm = request.text;
+  const gifUrl: { data?: string; error?: string } = await giphyService.getGif(searchTerm, true);
+  if (gifUrl.error) {
+    res.send(gifUrl.error);
+  } else {
+    webService.sendMessage(request.channel_name, gifUrl.data as string, searchTerm, userId, true);
   }
   res.status(200).send();
 });
