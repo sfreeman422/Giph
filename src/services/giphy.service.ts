@@ -22,7 +22,7 @@ export class GiphyService {
       `http://api.giphy.com/v1/gifs/${endpoint}?${queryParam}=${searchTerm}&api_key=${process.env.GIPHY_API_TOKEN}`,
     )
       .then((resp: any) => {
-        if (!resp.data.data) {
+        if (!resp.data.data || resp.data.data.length === 0) {
           return { error: `No gifs found.` };
         }
         if (isRandom) {

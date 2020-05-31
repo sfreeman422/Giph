@@ -15,7 +15,7 @@ eventController.post('/get/gif', async (req: Request, res: Response) => {
   const searchTerm = request.text;
   const gifUrl: { data?: string; error?: string } = await giphyService.getGif(searchTerm);
   if (gifUrl.error) {
-    res.send(gifUrl.error);
+    webService.sendErrorMessage(request.channel_name, gifUrl.error, userId);
   } else {
     webService.sendMessage(request.channel_name, gifUrl.data as string, searchTerm, userId, true);
   }
