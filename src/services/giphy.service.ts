@@ -22,7 +22,8 @@ export class GiphyService {
       `http://api.giphy.com/v1/gifs/${endpoint}?${queryParam}=${searchTerm}&api_key=${process.env.GIPHY_API_TOKEN}`,
     )
       .then((resp: any) => {
-        if (!resp.data.data.images) {
+        console.log(resp.data);
+        if (!resp.data.data) {
           return { error: `No gifs found.` };
         }
         if (isRandom) {
