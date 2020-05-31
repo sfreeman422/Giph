@@ -16,6 +16,16 @@ export class WebService {
     Axios.post(responseUrl, { delete_original: true });
   }
 
+  public sendErrorMessage(channel: string, text: string, user: string): void {
+    const token: string | undefined = process.env.GIPH_BOT_TOKEN;
+    this.web.chat.postEphemeral({
+      token,
+      channel,
+      text,
+      user,
+    });
+  }
+
   /**
    * Handles sending messages to the chat.
    */
@@ -79,7 +89,6 @@ export class WebService {
     ];
 
     if (isEphemeral) {
-      console.log('sending ephem');
       const postEphem: ChatPostEphemeralArguments = {
         token,
         channel,

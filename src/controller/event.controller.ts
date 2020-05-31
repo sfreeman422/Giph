@@ -9,32 +9,43 @@ const webService = WebService.getInstance();
 const giphyService = GiphyService.getInstance();
 
 eventController.post('/get/gif', async (req: Request, res: Response) => {
+  res.status(200).send();
   const request: SlashCommandRequest = req.body;
   const userId = request.user_id;
   const searchTerm = request.text;
+  const alertTimeout: NodeJS.Timeout = setTimeout(
+    () => webService.sendErrorMessage(request.channel_name, 'Loading...', userId),
+    3000,
+  );
   const gifUrl: { data?: string; error?: string } = await giphyService.getGif(searchTerm);
+  clearTimeout(alertTimeout);
   if (gifUrl.error) {
     res.send(gifUrl.error);
   } else {
     webService.sendMessage(request.channel_name, gifUrl.data as string, searchTerm, userId, true);
   }
-  res.status(200).send();
 });
 
 eventController.post('/get/gif/random', async (req: Request, res: Response) => {
+  res.status(200).send();
   const request: SlashCommandRequest = req.body;
   const userId = request.user_id;
   const searchTerm = request.text;
+  const alertTimeout: NodeJS.Timeout = setTimeout(
+    () => webService.sendErrorMessage(request.channel_name, 'Loading...', userId),
+    3000,
+  );
   const gifUrl: { data?: string; error?: string } = await giphyService.getGif(searchTerm, true);
+  clearTimeout(alertTimeout);
   if (gifUrl.error) {
-    res.send(gifUrl.error);
+    webService.sendErrorMessage(request.channel_name, gifUrl.error, userId);
   } else {
     webService.sendMessage(request.channel_name, gifUrl.data as string, searchTerm, userId, false);
   }
-  res.status(200).send();
 });
 
 eventController.post('/interaction', async (req: Request, res: Response) => {
+  res.status(200).send();
   const request = JSON.parse(req.body.payload);
   const type = request.type;
   const value = request.actions[0].value;
@@ -51,7 +62,12 @@ eventController.post('/interaction', async (req: Request, res: Response) => {
     } else if (value === 'cancel') {
       webService.deleteEphem(request.response_url);
     } else if (value === 'shuffle') {
+      const alertTimeout: NodeJS.Timeout = setTimeout(
+        () => webService.sendErrorMessage(request.channel_name, 'Loading...', userId),
+        3000,
+      );
       const gifUrl: { data?: string; error?: string } = await giphyService.getGif(text);
+      clearTimeout(alertTimeout);
       if (gifUrl.error) {
         res.send(gifUrl.error);
       } else {
@@ -60,5 +76,4 @@ eventController.post('/interaction', async (req: Request, res: Response) => {
       }
     }
   }
-  res.status(200).send();
 });
