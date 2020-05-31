@@ -21,7 +21,7 @@ export class WebService {
    */
   public sendMessage(
     channel: string,
-    text: string,
+    url: string,
     searchTerm: string,
     userId: string,
     isEphemeral: boolean,
@@ -32,7 +32,7 @@ export class WebService {
       {
         type: 'image',
         // eslint-disable-next-line @typescript-eslint/camelcase
-        image_url: text,
+        image_url: url,
         // eslint-disable-next-line @typescript-eslint/camelcase
         alt_text: searchTerm,
       },
@@ -49,7 +49,7 @@ export class WebService {
             value: 'send',
             // eslint-disable-next-line prettier/prettier
             // eslint-disable-next-line @typescript-eslint/camelcase
-            action_id: `${text},${searchTerm}`,
+            action_id: `${url},${searchTerm}`,
           },
           {
             type: 'button',
@@ -83,7 +83,7 @@ export class WebService {
       const postEphem: ChatPostEphemeralArguments = {
         token,
         channel,
-        text: text,
+        text: url,
         user: userId,
         blocks: ephemBlocks,
       };
@@ -103,13 +103,9 @@ export class WebService {
           {
             type: 'image',
             // eslint-disable-next-line @typescript-eslint/camelcase
-            image_url: text,
+            image_url: url,
             // eslint-disable-next-line @typescript-eslint/camelcase
-            alt_text: 'whatever',
-            title: {
-              type: 'plain_text',
-              text: searchTerm,
-            },
+            alt_text: searchTerm,
           },
           {
             type: 'context',
