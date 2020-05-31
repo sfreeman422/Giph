@@ -29,7 +29,7 @@ eventController.post('/get/gif/random', async (req: Request, res: Response) => {
   if (gifUrl.error) {
     res.send(gifUrl.error);
   } else {
-    webService.sendMessage(request.channel_name, gifUrl.data as string, searchTerm, userId, true);
+    webService.sendMessage(request.channel_name, gifUrl.data as string, searchTerm, userId, false);
   }
   res.status(200).send();
 });
