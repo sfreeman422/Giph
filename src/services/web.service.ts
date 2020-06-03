@@ -35,6 +35,7 @@ export class WebService {
     searchTerm: string,
     userId: string,
     isEphemeral: boolean,
+    isRandom: boolean,
     threadTimeStamp?: string,
   ): void {
     const token: string | undefined = process.env.GIPH_BOT_TOKEN;
@@ -121,7 +122,7 @@ export class WebService {
             elements: [
               {
                 type: 'mrkdwn',
-                text: `Posted by: <@${userId}> | Search: ${searchTerm}`,
+                text: `Posted by: <@${userId}> | Search: ${searchTerm} | ${isRandom ? '/giphr' : '/giph'}`,
               },
             ],
           },

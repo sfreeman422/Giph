@@ -17,7 +17,7 @@ eventController.post('/get/gif', async (req: Request, res: Response) => {
   if (gifUrl.error) {
     webService.sendErrorMessage(request.channel_name, gifUrl.error, userId);
   } else {
-    webService.sendMessage(request.channel_name, gifUrl.data as string, searchTerm, userId, true);
+    webService.sendMessage(request.channel_name, gifUrl.data as string, searchTerm, userId, true, false);
   }
 });
 
@@ -30,7 +30,7 @@ eventController.post('/get/gif/random', async (req: Request, res: Response) => {
   if (gifUrl.error) {
     webService.sendErrorMessage(request.channel_name, gifUrl.error, userId);
   } else {
-    webService.sendMessage(request.channel_name, gifUrl.data as string, searchTerm, userId, false);
+    webService.sendMessage(request.channel_name, gifUrl.data as string, searchTerm, userId, false, true);
   }
 });
 
@@ -48,7 +48,7 @@ eventController.post('/interaction', async (req: Request, res: Response) => {
       const url = words[0];
       const searchTerm = words[1];
       webService.deleteEphem(request.response_url);
-      webService.sendMessage(channel, url, searchTerm, userId, false);
+      webService.sendMessage(channel, url, searchTerm, userId, false, false);
     } else if (value === 'cancel') {
       webService.deleteEphem(request.response_url);
     } else if (value === 'shuffle') {
@@ -56,7 +56,7 @@ eventController.post('/interaction', async (req: Request, res: Response) => {
       if (gifUrl.error) {
         res.send(gifUrl.error);
       } else {
-        webService.sendMessage(channel, gifUrl.data as string, text, userId, true);
+        webService.sendMessage(channel, gifUrl.data as string, text, userId, true, false);
         webService.deleteEphem(request.response_url);
       }
     }
