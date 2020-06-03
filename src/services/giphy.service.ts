@@ -16,8 +16,8 @@ export class GiphyService {
     data?: string;
     error?: string;
   }> {
-    const endpoint = isRandom ? 'random' : 'search';
-    const queryParam = isRandom ? 'tag' : 'q';
+    const endpoint = isRandom ? 'translate' : 'search';
+    const queryParam = isRandom ? 's' : 'q';
     return await Axios.get(
       `http://api.giphy.com/v1/gifs/${endpoint}?${queryParam}=${searchTerm}&api_key=${process.env.GIPHY_API_TOKEN}`,
     )
@@ -26,7 +26,7 @@ export class GiphyService {
           return { error: `No gifs found.` };
         }
         if (isRandom) {
-          const downsized = resp.data.data.images.downsized.url as string;
+          const downsized: string = resp.data.data.images.downsized.url;
           const shortened = downsized.slice(0, downsized.indexOf('?'));
           return {
             data: shortened,
