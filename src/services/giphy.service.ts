@@ -18,8 +18,9 @@ export class GiphyService {
   }> {
     const endpoint = isRandom ? 'translate' : 'search';
     const queryParam = isRandom ? 's' : 'q';
+    const encodedSearchTerm = encodeURIComponent(searchTerm);
     return await Axios.get(
-      `http://api.giphy.com/v1/gifs/${endpoint}?${queryParam}=${searchTerm}&api_key=${process.env.GIPHY_API_TOKEN}`,
+      `http://api.giphy.com/v1/gifs/${endpoint}?${queryParam}=${encodedSearchTerm}&api_key=${process.env.GIPHY_API_TOKEN}`,
     )
       .then((resp: any) => {
         if (!resp.data.data || resp.data.data.length === 0) {
@@ -42,6 +43,11 @@ export class GiphyService {
       })
       .catch((e) => {
         console.error(e);
+        if (e && e.response && e.response.status === 404) {
+          return {
+            error: `No gifs found.`,
+          };
+        }
         return {
           error: `Uh oh! Something went wrong. Please try again.`,
         };
