@@ -19,9 +19,13 @@ export class GiphyService {
     const endpoint = isRandom ? 'translate' : 'search';
     const queryParam = isRandom ? 's' : 'q';
     const encodedSearchTerm = encodeURIComponent(searchTerm);
-    return await Axios.get(
-      `http://api.giphy.com/v1/gifs/${endpoint}?${queryParam}=${encodedSearchTerm}&api_key=${process.env.GIPHY_API_TOKEN}`,
-    )
+    const weirdness = isRandom ? Math.floor(Math.random() * 10) : 0;
+    let url = `http://api.giphy.com/v1/gifs/${endpoint}?${queryParam}=${encodedSearchTerm}&api_key=${process.env.GIPHY_API_TOKEN}`;
+    if (isRandom) {
+      url = url + `&weirdness=${weirdness}`;
+    }
+
+    return await Axios.get(url)
       .then((resp: any) => {
         if (!resp.data.data || resp.data.data.length === 0) {
           return { error: `No gifs found.` };

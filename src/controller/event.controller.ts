@@ -54,7 +54,7 @@ eventController.post('/interaction', async (req: Request, res: Response) => {
     } else if (value === 'shuffle') {
       const gifUrl: { data?: string; error?: string } = await giphyService.getGif(text);
       if (gifUrl.error) {
-        res.send(gifUrl.error);
+        webService.sendErrorMessage(request.channel_name, gifUrl.error, request.user_id);
       } else {
         webService.sendMessage(channel, gifUrl.data as string, text, userId, true, false);
         webService.deleteEphem(request.response_url);
