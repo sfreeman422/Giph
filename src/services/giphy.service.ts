@@ -19,7 +19,7 @@ export class GiphyService {
     const endpoint = isRandom ? 'translate' : 'search';
     const queryParam = isRandom ? 's' : 'q';
     const encodedSearchTerm = encodeURIComponent(searchTerm);
-    const weirdness = isRandom ? Math.floor(Math.random() * 10) : 0;
+    const weirdness = isRandom ? Math.floor(Math.random() * 5) : 0;
     let url = `http://api.giphy.com/v1/gifs/${endpoint}?${queryParam}=${encodedSearchTerm}&api_key=${process.env.GIPHY_API_TOKEN}`;
     if (isRandom) {
       url = url + `&weirdness=${weirdness}`;
