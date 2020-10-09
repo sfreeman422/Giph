@@ -37,6 +37,7 @@ eventController.post('/get/gif/random', async (req: Request, res: Response) => {
 eventController.post('/interaction', async (req: Request, res: Response) => {
   res.status(200).send();
   const request = JSON.parse(req.body.payload);
+  console.log(request);
   const type = request.type;
   const value = request.actions[0].value;
   const channel = request.channel.name;
