@@ -19,7 +19,7 @@ export class RedisPersistenceService {
   }
 
   private static instance: RedisPersistenceService;
-  private static redis: Redis = new ioredis('172.20.0.1').on('connect', () => console.log('Connected to Redis.'));
+  private static redis: Redis = new ioredis('172.20.0.3').on('connect', () => console.log('Connected to Redis.'));
 
   getValue(key: string): Promise<string | null> {
     return RedisPersistenceService.redis.get(key);
