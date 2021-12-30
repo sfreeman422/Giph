@@ -1,6 +1,9 @@
 import Axios from 'axios';
+import { MuzzleRedisTypeEnum, RedisPersistenceService, SuppressionType } from './redis.persistence.service';
 
 export class GiphyService {
+  private redis: RedisPersistenceService = RedisPersistenceService.getInstance();
+
   public static getInstance(): GiphyService {
     if (!GiphyService.instance) {
       GiphyService.instance = new GiphyService();
@@ -8,6 +11,14 @@ export class GiphyService {
     return GiphyService.instance;
   }
   private static instance: GiphyService;
+
+  public async isSuppressed(userId: string, teamId: string): Promise<boolean> {
+    const isBackfire = await this.redis.getValue(this.redis.getRedisKeyName(userId, teamId, SuppressionType.Backfire));
+    const isMuzzled = await this.redis.getValue(
+      this.redis.getRedisKeyName(userId, teamId, SuppressionType.Muzzle, MuzzleRedisTypeEnum.Muzzled),
+    );
+    return !!(isBackfire || isMuzzled);
+  }
 
   async getGif(
     searchTerm: string,
