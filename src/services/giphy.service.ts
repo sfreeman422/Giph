@@ -32,11 +32,8 @@ export class GiphyService {
         }
         if (isRandom) {
           const downsized: string = resp.data.data.images.downsized.url;
-          const shortened = downsized.slice(0, downsized.indexOf('?'));
-          console.log('downsized url: ', downsized);
-          console.log('shortened url: ', shortened);
           return {
-            data: shortened,
+            data: downsized,
           };
         } else {
           const random = Math.floor(Math.random() * resp.data.data.length);
