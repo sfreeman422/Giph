@@ -39,6 +39,7 @@ export class WebService {
     threadTimeStamp?: string,
   ): void {
     const token: string | undefined = process.env.GIPH_BOT_TOKEN;
+    console.log('image_url: ', url);
     const ephemBlocks = [
       {
         type: 'image',
